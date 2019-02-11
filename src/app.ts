@@ -6,6 +6,7 @@ import { find } from "./find";
 import { delay } from "./helpers";
 
 async function start() {
+    logger.warn('Starting...');
     await initData();
 
     const names = await unknownNameRepository.oldest({ limit: 25 });
@@ -24,4 +25,5 @@ async function start() {
 
 start()
     .catch(e => logger.error(e))
-    .then(() => closeData());
+    .then(() => closeData())
+    .then(() => logger.warn('END'));
