@@ -30,6 +30,11 @@ export async function initData() {
     uniqueNameRepository = UniqueNameRepositoryBuilder.build(db);
     unknownNameRepository = UnknownNameRepositoryBuilder.build(db);
     topicRepository = TopicRepositoryBuilder.build(db);
+
+    // await pictureRepository.createStorage();
+    // await uniqueNameRepository.createStorage();
+    // await unknownNameRepository.createStorage();
+    // await topicRepository.createStorage();
 }
 
 export async function closeData() {

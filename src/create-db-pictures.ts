@@ -4,6 +4,7 @@ import { UnknownName, Picture, PictureHelper } from "@entipic/domain";
 import { WebEntity } from "./types";
 import { pictureRepository } from "./data";
 import { s3PutImage } from "./s3";
+import * as sharp from 'sharp';
 
 
 export async function createDbPictures(unknownName: UnknownName, webEntity?: WebEntity) {
@@ -30,8 +31,16 @@ export async function createDbPictures(unknownName: UnknownName, webEntity?: Web
 
 		// is new created picture
 		if (dbPicture && dbPicture.createdAt) {
-			await s3PutImage(picture.id, image.data);
-			list.push(dbPicture);
+			let instance = sharp(image.data);
+			const size = PictureHelper.getPictureSize('f');
+			instance = instance.resize(size, size);
+
+			try {
+				await s3PutImage(picture.id, await instance.toBuffer());
+				list.push(dbPicture);
+			} catch (e) {
+				logger.error(e)
+			}
 		}
 	}
 

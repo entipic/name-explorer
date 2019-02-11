@@ -2,8 +2,8 @@
   "name": "@entipic/name-explorer",
   "version": "1.0.0",
   "description": "Entipic name explorer",
-  "main": "./lib/index.js",
   "scripts": {
+    "start": "node ./lib/app.js",
     "pretest": "npm run clean && npm run tsc",
     "test": "ava --no-cache --verbose lib/**/*.test.js",
     "posttest": "npm run clean-test-code",
@@ -33,6 +33,8 @@
   },
   "homepage": "https://github.com/entipic/name-explorer#readme",
   "dependencies": {
+    "@entipic/data": "^1.0.0",
+    "@entipic/domain": "^1.1.0",
     "atonic": "^1.0.4",
     "aws-sdk": "^2.400.0",
     "cheerio": "^1.0.0-rc.2",
@@ -41,6 +43,8 @@
     "entity-finder": "^0.5.2",
     "got": "^9.6.0",
     "mongodb": "^3.1.13",
+    "ournet.logger": "^0.1.0",
+    "sharp": "^0.21.3",
     "wiki-entity": "^0.4.3"
   },
   "devDependencies": {
@@ -49,7 +53,9 @@
     "@types/got": "^9.4.0",
     "@types/mongodb": "^3.1.19",
     "@types/node": "latest",
+    "@types/sharp": "^0.21.2",
     "ava": "^1.2.1",
+    "dotenv": "^6.2.0",
     "rimraf": "^2.6.2",
     "typescript": "latest"
   }

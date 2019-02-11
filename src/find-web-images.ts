@@ -23,7 +23,7 @@ export async function findWebImages(unknownName: UnknownName, webEntity?: WebEnt
 		if (webEntity.type) {
 			if (webEntity.type === SimpleEntityType.PERSON) {
 				options.type = 'face';
-			} else if ([SimpleEntityType.ORG, SimpleEntityType.PRODUCT].includes(webEntity.type)) {
+			} else if (~[SimpleEntityType.ORG, SimpleEntityType.PRODUCT].indexOf(webEntity.type)) {
 				name += ' logo';
 			}
 		}
@@ -39,11 +39,11 @@ export async function findWebImages(unknownName: UnknownName, webEntity?: WebEnt
 			response = await got(image.url, {
 				headers: {
 					'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_10_3) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/43.0.2357.130 Safari/537.36',
-					'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8',
+					'Accept': 'image/jpeg,image/webp,*/*;q=0.8',
 					'Accept-Language': 'en-US,en;q=0.8,cs;q=0.6,es;q=0.4,hu;q=0.2,it;q=0.2,lt;q=0.2,ro;q=0.2,ru;q=0.2,sk;q=0.2,uk;q=0.2,pl;q=0.2,bg;q=0.2'
 				},
 				encoding: null,
-				timeout: 1000 * 3
+				timeout: 1000 * 3,
 			})
 			const result = await processImage(response.body, image);
 			list.push(result);
@@ -55,7 +55,7 @@ export async function findWebImages(unknownName: UnknownName, webEntity?: WebEnt
 }
 
 async function processImage(data: Buffer, image: { url: string, host: string }): Promise<WebImage> {
-	const hash = await dhash(data);
+	const hash = (await dhash(data) as Buffer).toString('hex');
 	return {
 		hash,
 		url: image.url,

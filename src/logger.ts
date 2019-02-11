@@ -1,24 +1,16 @@
 
-let _logger: ILogger = console;
+export const logger: ILogger = require('ournet.logger');
 
-interface ILogger {
-	info(message?: any, ...optionalParams: any[]): void;
-	warn(message?: any, ...optionalParams: any[]): void;
-	error(message?: any, ...optionalParams: any[]): void;
+if (process.env.NODE_ENV === 'production') {
+    (<any>logger).loggly({
+        tags: ['entipic-explorer'],
+        json: true
+    });
+    (<any>logger).removeConsole();
 }
 
-export const logger: ILogger = {
-	info() {
-		_logger.info.apply(_logger, arguments as any);
-	},
-	warn() {
-		_logger.warn.apply(_logger, arguments as any);
-	},
-	error() {
-		_logger.error.apply(_logger, arguments as any);
-	}
-}
-
-export function setLogger(l: ILogger) {
-	_logger = l;
+export interface ILogger {
+    error(message?: any, ...optionalParams: any[]): void
+    info(message?: any, ...optionalParams: any[]): void
+    warn(message?: any, ...optionalParams: any[]): void
 }

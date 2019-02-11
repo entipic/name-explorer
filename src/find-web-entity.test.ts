@@ -9,6 +9,7 @@ test('ro:SUA', async t => {
         return t.fail('Not found entity!');
     }
     t.is(entity.type, SimpleEntityType.PLACE);
+    t.is(entity.englishName, 'United States');
 })
 
 test('ro:adrian ursu', async t => {

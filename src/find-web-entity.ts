@@ -1,8 +1,8 @@
 
-const debug = require('debug')('finder');
+const debug = require('debug')('entipic:name-explorer');
 import { findTitles, FindTitleOptions } from 'entity-finder';
 import { countryName } from './country-name';
-import { getEntities, convertToSimpleEntity, WikiEntity } from 'wiki-entity';
+import { getEntities, convertToSimpleEntity, WikiEntity, WikidataPropsParam } from 'wiki-entity';
 import { WebEntity } from './types';
 
 export async function findWebEntity(name: string, lang: string, country?: string) {
@@ -25,21 +25,46 @@ export async function findWebEntity(name: string, lang: string, country?: string
 		return;
 	}
 
+	return exploreEntity(titles.map(item => item.title), lang);
+}
+
+async function exploreEntity(titles: string[], lang: string) {
 	const entities = await getEntities({
-		titles: titles.map(item => item.title),
+		titles,
 		extract: 3,
 		claims: 'item',
 		language: lang,
 		types: true,
 		redirects: true,
+		props: [
+			WikidataPropsParam.info,
+			WikidataPropsParam.labels,
+			WikidataPropsParam.descriptions,
+			WikidataPropsParam.datatype,
+			WikidataPropsParam.claims,
+			WikidataPropsParam.sitelinks,
+		],
 	});
 
 	if (!entities.length) {
-		debug('NOT found entity for: ' + name);
 		return;
 	}
 
-	return createWebEntity(entities[0], lang);
+	const entity = createWebEntity(entities[0], lang);
+	if (!entity) {
+		return;
+	}
+
+	if (lang !== 'en' && entity.englishName) {
+		const enEntity = await exploreEntity([entity.englishName], 'en');
+		if (enEntity) {
+			entity.description = enEntity.description || entity.description;
+			entity.about = enEntity.about || entity.about;
+			entity.popularity = enEntity.popularity > entity.popularity ? enEntity.popularity : entity.popularity;
+		}
+	}
+
+	return entity;
 }
 
 function createWebEntity(entity: WikiEntity, lang: string) {
@@ -54,7 +79,7 @@ function createWebEntity(entity: WikiEntity, lang: string) {
 	webEntity.popularity += Object.keys(entity.claims || {}).length;
 
 	if (entity.sitelinks) {
-		if (entity.sitelinks['en']) {
+		if (entity.sitelinks['en'] && lang !== 'en') {
 			webEntity.englishName = entity.sitelinks['en'];
 		}
 	}

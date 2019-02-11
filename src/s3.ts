@@ -3,10 +3,11 @@
 
 import S3 = require('aws-sdk/clients/s3');
 import { PictureHelper } from '@entipic/domain';
+import { Readable } from 'stream';
 const BUCKET = process.env.ENTIPIC_IMAGES_BUCKET || 'cdn.entipic.com';
 const s3 = new S3();
 
-export async function s3PutImage(id: string, body: Buffer | Blob, contentType: string = 'image/jpeg') {
+export async function s3PutImage(id: string, body: Buffer | Blob | Readable, contentType: string = 'image/jpeg') {
     const key = PictureHelper.formatS3Key(id);
     await s3.putObject({
         Bucket: BUCKET,

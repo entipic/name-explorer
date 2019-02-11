@@ -14,13 +14,23 @@ export async function createNewTopic(unknownName: UnknownName, webEntity?: WebEn
 	}
 	const picture = pictures[0];
 
+	let name = unknownName.name;
+	let lang = unknownName.lang;
+
+	if (webEntity && lang !== 'en') {
+		if (webEntity.englishName) {
+			name = webEntity.englishName;
+			lang = 'en';
+		}
+	}
+
 	const topic = TopicHelper.build({
 		description: webEntity && (webEntity.about || webEntity.description),
 		type: webEntity && convertType(webEntity.type),
 		wikiPageId: webEntity && webEntity.wikiPageId,
 		wikiPageTitle: webEntity && webEntity.wikiPageTitle,
-		lang: unknownName.lang,
-		name: webEntity && webEntity.name || unknownName.name,
+		lang,
+		name,
 		pictureHost: picture.host,
 		pictureId: picture.id,
 		picturesIds: pictures.map(item => item.id),

@@ -16,7 +16,7 @@ export function createUniquenames(unknownName: UnknownName, entity?: WebEntity) 
 
 	if (entity) {
 		add(UniqueNameHelper.build({
-			lang, name: entity.name, pictureId: '', topicId: ''
+			lang: entity.lang || lang, name: entity.name, pictureId: '', topicId: ''
 		}));
 
 		// entity.names.forEach(name => {
