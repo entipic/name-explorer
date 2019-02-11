@@ -5,11 +5,13 @@ import { logger } from "./logger";
 import { find } from "./find";
 import { delay } from "./helpers";
 
+const NAMES_LIMIT = process.env.NAMES_LIMIT && parseInt(process.env.NAMES_LIMIT) || 100;
+
 async function start() {
     logger.warn('Starting...');
     await initData();
 
-    const names = await unknownNameRepository.oldest({ limit: 25 });
+    const names = await unknownNameRepository.oldest({ limit: NAMES_LIMIT });
 
     for (const name of names) {
         try {
