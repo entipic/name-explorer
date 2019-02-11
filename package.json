@@ -1,0 +1,56 @@
+{
+  "name": "@entipic/name-explorer",
+  "version": "1.0.0",
+  "description": "Entipic name explorer",
+  "main": "./lib/index.js",
+  "scripts": {
+    "pretest": "npm run clean && npm run tsc",
+    "test": "ava --no-cache --verbose lib/**/*.test.js",
+    "posttest": "npm run clean-test-code",
+    "tsc": "tsc",
+    "tscw": "tsc -w",
+    "preversion": "npm run tsc",
+    "postversion": "git push --follow-tags",
+    "prepublishOnly": "npm run tsc && npm run clean-test-code",
+    "clean": "rimraf ./lib",
+    "clean-test-code": "rimraf ./lib/**/*.test.js && rimraf ./lib/**/*.test.d.ts"
+  },
+  "engines": {
+    "node": ">=8.0.0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/entipic/name-explorer.git"
+  },
+  "keywords": [
+    "entipic",
+    "new-name"
+  ],
+  "author": "Dumitru Cantea",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/entipic/name-explorer/issues"
+  },
+  "homepage": "https://github.com/entipic/name-explorer#readme",
+  "dependencies": {
+    "atonic": "^1.0.4",
+    "aws-sdk": "^2.400.0",
+    "cheerio": "^1.0.0-rc.2",
+    "debug": "^4.1.1",
+    "dhash-image": "^1.2.1",
+    "entity-finder": "^0.5.2",
+    "got": "^9.6.0",
+    "mongodb": "^3.1.13",
+    "wiki-entity": "^0.4.3"
+  },
+  "devDependencies": {
+    "@types/aws-sdk": "^2.7.0",
+    "@types/cheerio": "^0.22.10",
+    "@types/got": "^9.4.0",
+    "@types/mongodb": "^3.1.19",
+    "@types/node": "latest",
+    "ava": "^1.2.1",
+    "rimraf": "^2.6.2",
+    "typescript": "latest"
+  }
+}
