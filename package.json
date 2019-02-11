@@ -54,7 +54,7 @@
     "@types/mongodb": "^3.1.19",
     "@types/node": "latest",
     "@types/sharp": "^0.21.2",
-    "ava": "^1.2.1",
+    "ava": "~0.25.x",
     "dotenv": "^6.2.0",
     "rimraf": "^2.6.2",
     "typescript": "latest"
