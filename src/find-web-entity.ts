@@ -29,7 +29,7 @@ export async function findWebEntity(name: string, lang: string, country?: string
 }
 
 async function exploreEntity(titles: string[], lang: string) {
-	const entities = await getEntities({
+	let entities = await getEntities({
 		titles,
 		extract: 3,
 		claims: 'item',
@@ -45,6 +45,8 @@ async function exploreEntity(titles: string[], lang: string) {
 			WikidataPropsParam.sitelinks,
 		],
 	});
+
+	entities = entities.filter(item => !!item);
 
 	if (!entities.length) {
 		return;
