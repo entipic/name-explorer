@@ -33,7 +33,7 @@ export async function createDbPictures(unknownName: UnknownName, webEntity?: Web
 		if (dbPicture && dbPicture.createdAt) {
 			let instance = sharp(image.data);
 			const size = PictureHelper.getPictureSize('f');
-			instance = instance.resize(size, size);
+			instance = instance.resize(size, size, { kernel: 'cubic' });
 
 			try {
 				await s3PutImage(picture.id, await instance.toBuffer());

@@ -119,7 +119,7 @@ function selectEntity(entities: WebEntity[], name: string, country?: string) {
 
 	if (country) {
 		const countryEntities = entities
-			.filter(item => item.countryCodes && item.countryCodes.includes(country))
+			.filter(item => item.countryCodes && item.countryCodes.indexOf(country) > -1)
 			.sort((a, b) => b.popularity - a.popularity);
 
 		if (countryEntities.length) {
