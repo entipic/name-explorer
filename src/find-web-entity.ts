@@ -4,6 +4,7 @@ import { findTitles, FindTitleOptions } from 'entity-finder';
 import { countryName } from './country-name';
 import { getEntities, convertToSimpleEntity, WikiEntity, WikidataPropsParam } from 'wiki-entity';
 import { WebEntity } from './types';
+import { atonic } from '@entipic/domain';
 
 export async function findWebEntity(name: string, lang: string, country?: string) {
 
@@ -12,9 +13,9 @@ export async function findWebEntity(name: string, lang: string, country?: string
 	const options: FindTitleOptions = { limit: 2, orderByTagsLimit: 1 };
 
 	if (country) {
-		country = countryName(country, lang);
-		if (country) {
-			options.tags = [country];
+		const tag = countryName(country, lang);
+		if (tag) {
+			options.tags = [tag];
 		}
 
 		debug('finding name with tags', options.tags);
@@ -25,10 +26,10 @@ export async function findWebEntity(name: string, lang: string, country?: string
 		return;
 	}
 
-	return exploreEntity(titles.map(item => item.title), lang);
+	return exploreEntity(name, titles.map(item => item.title), lang, country);
 }
 
-async function exploreEntity(titles: string[], lang: string) {
+async function exploreEntity(name: string, titles: string[], lang: string, country?: string) {
 	let entities = await getEntities({
 		titles,
 		extract: 3,
@@ -52,13 +53,14 @@ async function exploreEntity(titles: string[], lang: string) {
 		return;
 	}
 
-	const entity = createWebEntity(entities[0], lang);
+	const webEntities = entities.map(it => createWebEntity(it, lang)).filter(item => !!item) as WebEntity[];
+	const entity = selectEntity(webEntities, name, country);
 	if (!entity) {
 		return;
 	}
 
 	if (lang !== 'en' && entity.englishName) {
-		const enEntity = await exploreEntity([entity.englishName], 'en');
+		const enEntity = await exploreEntity(name, [entity.englishName], 'en');
 		if (enEntity) {
 			entity.description = enEntity.description || entity.description;
 			entity.about = enEntity.about || entity.about;
@@ -101,4 +103,31 @@ export function getSimpleName(name: string) {
 	if (result) {
 		return result[1];
 	}
+}
+
+function selectEntity(entities: WebEntity[], name: string, country?: string) {
+	if (entities.length === 1) {
+		return entities[0];
+	}
+
+	name = atonic(name.toLowerCase());
+	for (const item of entities) {
+		if (atonic(item.name.toLowerCase()) === name) {
+			return item;
+		}
+	}
+
+	if (country) {
+		const countryEntities = entities
+			.filter(item => item.countryCodes && item.countryCodes.includes(country))
+			.sort((a, b) => b.popularity - a.popularity);
+
+		if (countryEntities.length) {
+			return countryEntities[0];
+		}
+	}
+
+	entities = entities.sort((a, b) => b.popularity - a.popularity);
+
+	return entities[0];
 }

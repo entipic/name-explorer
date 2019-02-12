@@ -36,6 +36,16 @@ test('ro:md:ministerul muncii', async t => {
     t.true(entity.wikiPageTitle && entity.wikiPageTitle.includes('Republica Moldova'));
 })
 
+test('ro-md:Chișinău', async t => {
+    const entity = await findWebEntity('Chișinău', 'ro', 'md');
+    if (!entity) {
+        return t.fail('Not found entity!');
+    }
+    // console.log(entity)
+    t.is(entity.type, SimpleEntityType.PLACE);
+    t.is(entity.englishName, 'Chișinău');
+})
+
 test('getSimpleName', t => {
     t.is(getSimpleName('Name (aha)'), 'Name');
 })
