@@ -10,6 +10,7 @@ export async function createNewTopic(unknownName: UnknownName, webEntity?: WebEn
 
 	const pictures = await createDbPictures(unknownName, webEntity);
 	if (!pictures.length) {
+		console.warn(`No images for ${unknownName}`);
 		return;
 	}
 	const picture = pictures[0];
