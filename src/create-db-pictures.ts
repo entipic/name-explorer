@@ -11,6 +11,10 @@ export async function createDbPictures(
   webEntity?: WebEntity
 ) {
   const images = await findWebImages(unknownName, webEntity);
+  if (images.length === 0) {
+    logger.warn(`No image found for ${unknownName}`);
+    return [];
+  }
   const list: Picture[] = [];
 
   for (const image of images) {
