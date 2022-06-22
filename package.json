@@ -40,7 +40,7 @@
     "debug": "^4.1.1",
     "dhash-image": "^1.2.1",
     "entity-finder": "^0.5.2",
-    "got": "^9.6.0",
+    "got": "^11.8.5",
     "mongodb": "^3.1.13",
     "ournet.logger": "^0.1.0",
     "wiki-entity": "^0.4.3"
