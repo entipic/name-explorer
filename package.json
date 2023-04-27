@@ -16,7 +16,7 @@
     "clean-test-code": "rimraf ./lib/**/*.test.js && rimraf ./lib/**/*.test.d.ts"
   },
   "engines": {
-    "node": ">=8.0.0"
+    "node": ">=8.0.0 && <=16.20"
   },
   "repository": {
     "type": "git",
