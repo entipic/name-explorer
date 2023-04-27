@@ -33,7 +33,7 @@
   },
   "homepage": "https://github.com/entipic/name-explorer#readme",
   "dependencies": {
-    "@entipic/data": "^1.2.6",
+    "@entipic/data": "^1.2.7",
     "@entipic/domain": "^1.2.9",
     "atonic": "^1.0.4",
     "aws-sdk": "^2.683.0",

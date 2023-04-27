@@ -777,13 +777,13 @@
   dependencies:
     arrify "^1.0.1"
 
-"@entipic/data@^1.2.6":
-  version "1.2.6"
-  resolved "https://registry.yarnpkg.com/@entipic/data/-/data-1.2.6.tgz#b9793af4d223d97f57fb9c74314cd9e0deb9765d"
-  integrity sha512-Gkj3iFsxvfAqRe2/q6qEmXB/I4D4edx2fe3ZctWj0teSna4RpQxuskCyzyTf01Hjsps6qsnQVIFe+FlIoFvlxQ==
+"@entipic/data@^1.2.7":
+  version "1.2.7"
+  resolved "https://registry.yarnpkg.com/@entipic/data/-/data-1.2.7.tgz#e203d0d532b4a40c9aba4baa2d392c0caa510ed8"
+  integrity sha512-fY6pTrhjm9GgCZESXw0pwvnssBS9UWy4Cqjb4abAxHxdX+d/+wlN/DCCl4huC3EqvwunC88UhIqZK+gsrvi/Pw==
   dependencies:
     "@entipic/domain" "^1.2.9"
-    mongo-item "^0.2.1"
+    mongo-item "^0.2.2"
     mongodb "^4.16.0"
 
 "@entipic/domain@^1.2.9":
@@ -3717,10 +3717,10 @@ mkdirp@^0.5.1:
   dependencies:
     minimist "^1.2.6"
 
-mongo-item@^0.2.1:
-  version "0.2.1"
-  resolved "https://registry.yarnpkg.com/mongo-item/-/mongo-item-0.2.1.tgz#f44e733425d97f40d0ecfc2dd5bdc52f149c8e76"
-  integrity sha512-83ukoEEYz+Gw5kGnMF/2WS5DmdeYW9PORX91LQPI5h6ReBGEHPIc6X9GbJo8JxbiaQxN5SDClsFla3wR7Jefbg==
+mongo-item@^0.2.2:
+  version "0.2.2"
+  resolved "https://registry.yarnpkg.com/mongo-item/-/mongo-item-0.2.2.tgz#0d41a50e50f7bcdb30858ae16552899980c7bcda"
+  integrity sha512-2q4b9kknHGRBkcFFvp7VZ6fPjGfM8Zr2+NSwCRxS4uI70nVIJ6OxwvH3i1T3+g4m7sNy8QatxLi71hU9vSL+3g==
   dependencies:
     mongodb "^4.16.0"
 
