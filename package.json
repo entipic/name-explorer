@@ -7,7 +7,7 @@
     "pretest": "npm run clean && npm run tsc",
     "test": "ava --no-cache --verbose lib/**/*.test.js",
     "posttest": "npm run clean-test-code",
-    "tsc": "tsc",
+    "tsc": "./node_modules/.bin/tsc",
     "tscw": "tsc -w",
     "preversion": "npm run tsc",
     "postversion": "git push --follow-tags",
