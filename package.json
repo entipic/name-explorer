@@ -46,7 +46,6 @@
   },
   "devDependencies": {
     "@types/got": "^9.4.0",
-    "@types/node": "latest",
     "@types/sharp": "^0.25.0",
     "ava": "~0.25.x",
     "dotenv": "^6.2.0",
