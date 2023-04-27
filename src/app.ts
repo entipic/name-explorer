@@ -5,7 +5,7 @@ import { logger } from "./logger";
 import { find } from "./find";
 import { delay } from "./helpers";
 
-const debug = require('debug')('entipic:name-explorer');
+const debug = require("debug")("entipic:name-explorer");
 
 const NAMES_LIMIT =
   (process.env.NAMES_LIMIT && parseInt(process.env.NAMES_LIMIT)) || 100;
@@ -15,6 +15,8 @@ async function start() {
   await initData();
 
   const names = await unknownNameRepository.oldest({ limit: NAMES_LIMIT });
+
+  debug(`Got ${names.length} names`);
 
   for (const name of names) {
     debug(`Exploring name ${name.name}`);

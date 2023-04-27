@@ -3,7 +3,7 @@
  *
  */
 
-import * as got from "got";
+import got from "got";
 import { URL } from "url";
 
 const INVALID_HOSTS = ["feelgrafix.com", "picturesstar.com"];

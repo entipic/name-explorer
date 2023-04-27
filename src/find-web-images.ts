@@ -1,5 +1,5 @@
 
-import * as got from 'got';
+import got from 'got';
 
 import { findImagesOnGoogle } from './google-images';
 import { UnknownName } from '@entipic/domain';

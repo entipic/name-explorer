@@ -42,7 +42,7 @@ test("ro-md:Chișinău", async (t) => {
   if (!entity) {
     return t.fail("Not found entity!");
   }
-  // console.log(entity)
+  console.log(entity)
   t.is(entity.type, SimpleEntityType.PLACE);
   t.is(entity.englishName, "Chișinău");
 });

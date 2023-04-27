@@ -4,7 +4,7 @@ import { UnknownName, Picture, PictureHelper } from "@entipic/domain";
 import { WebEntity } from "./types";
 import { pictureRepository } from "./data";
 import { s3PutImage } from "./s3";
-import * as sharp from "sharp";
+import sharp from "sharp";
 
 export async function createDbPictures(
   unknownName: UnknownName,
@@ -32,6 +32,7 @@ export async function createDbPictures(
           logger.warn("Picture exists: " + picture.id);
           return picture;
         }
+        return undefined;
       });
 
     // is new created picture
