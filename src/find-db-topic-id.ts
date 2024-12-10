@@ -3,22 +3,18 @@ import { SimpleUniqueName } from "./types";
 
 export async function findDbTopicId(uniqueNames: SimpleUniqueName[]) {
   const namesByLanguage = uniqueNames
-    .filter((un) => {
-      return !un.country;
-    })
+    .filter((un) => !un.country)
     .map((item) => item.id);
   const namesByCountry = uniqueNames
-    .filter((un) => {
-      return !!un.country;
-    })
+    .filter((un) => !!un.country)
     .map((item) => item.id);
 
-  const idByLanguage = await getTopicId(namesByLanguage);
-  if (idByLanguage) {
-    return idByLanguage;
+  if (namesByCountry.length) {
+    const idByCountry = await getTopicId(namesByCountry);
+    if (idByCountry) return idByCountry;
   }
 
-  return getTopicId(namesByCountry);
+  return getTopicId(namesByLanguage);
 }
 
 async function getTopicId(ids: string[]) {

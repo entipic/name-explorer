@@ -39,10 +39,8 @@
     "aws-sdk": "^2.683.0",
     "debug": "^4.1.1",
     "dhash-image": "^1.2.1",
-    "entity-finder": "^0.5.2",
     "got": "^9.6.0",
-    "mongodb": "^4.16.0",
-    "wiki-entity": "^0.4.3"
+    "mongodb": "^4.16.0"
   },
   "devDependencies": {
     "@types/got": "^9.4.0",

@@ -1,16 +1,14 @@
 import { findWebImages } from "./find-web-images";
 import { logger } from "./logger";
 import { UnknownName, Picture, PictureHelper } from "@entipic/domain";
-import { WebEntity } from "./types";
 import { pictureRepository } from "./data";
 import { s3PutImage } from "./s3";
 import sharp from "sharp";
 
 export async function createDbPictures(
-  unknownName: UnknownName,
-  webEntity?: WebEntity
+  unknownName: UnknownName
 ) {
-  const images = await findWebImages(unknownName, webEntity);
+  const images = await findWebImages(unknownName);
   if (images.length === 0) {
     logger.warn(`No image found for ${unknownName}`);
     return [];
