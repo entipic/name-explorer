@@ -16,8 +16,9 @@ export async function findWebImages(
   const options = { limit: 2 } as any;
   let name = unknownName.name;
   let country = unknownName.country;
+  let lang = unknownName.lang;
 
-  const images = await findImagesOnGoogle(name, country, options);
+  const images = await findImagesOnGoogle(name, lang, country, options);
 
   const list = [];
 

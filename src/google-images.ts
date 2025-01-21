@@ -10,6 +10,7 @@ const INVALID_HOSTS = ["feelgrafix.com", "picturesstar.com"];
 
 export async function findImagesOnGoogle(
   name: string,
+  lang: string,
   country?: string,
   options?: { limit: number; type?: string }
 ) {
@@ -17,11 +18,11 @@ export async function findImagesOnGoogle(
   options.limit = options.limit || 2;
   //options.type = options.type || 'photo';
   let url =
-    "https://www.google.com/search?q={q}&lr=&cr={country}&prmd=imvnslo&source=lnms&tbm=isch&tbas=0&tbs=itp:{type},isz:lt,islt:qsvga,ift:jpg&safe=on";
+    "https://www.google.com/search?q={q}&lr=lang_{lang}&cr={country}&prmd=imvnslo&source=lnms&tbm=isch&tbas=0&tbs=itp:{type},isz:lt,islt:qsvga,ift:jpg&safe=on";
   url = url
     .replace("{q}", encodeURIComponent(name))
-    .replace("{type}", options.type || "");
-  //.replace('{lang}', lang || 'en');
+    .replace("{type}", options.type || "")
+    .replace("{lang}", lang);
 
   if (country) {
     url = url.replace("{country}", "country" + country.toUpperCase());
