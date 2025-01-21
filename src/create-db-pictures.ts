@@ -5,12 +5,10 @@ import { pictureRepository } from "./data";
 import { s3PutImage } from "./s3";
 import sharp from "sharp";
 
-export async function createDbPictures(
-  unknownName: UnknownName
-) {
+export async function createDbPictures(unknownName: UnknownName) {
   const images = await findWebImages(unknownName);
   if (images.length === 0) {
-    logger.warn(`No image found for ${unknownName}`);
+    logger.warn(`No image found for ${unknownName.name}`, unknownName);
     return [];
   }
   const list: Picture[] = [];

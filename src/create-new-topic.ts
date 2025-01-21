@@ -6,7 +6,7 @@ import { topicRepository } from "./data";
 export async function createNewTopic(unknownName: UnknownName) {
   const pictures = await createDbPictures(unknownName);
   if (!pictures.length) {
-    logger.warn(`No images for ${unknownName}`);
+    logger.warn(`No images for ${unknownName.name}`, unknownName);
     return;
   }
   const picture = pictures[0];
