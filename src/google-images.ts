@@ -50,7 +50,7 @@ export async function findImagesOnGoogle(
   }
 
   let regResult;
-  const reg = /"(https?:\/\/[^"]+\.jpg)"/g;
+  const reg = /"(https?:\/\/[^"]+\.(jpeg|jpg|webp))"/g;
   const list = [];
   while ((regResult = reg.exec(response.body))) {
     const href = regResult[1];
