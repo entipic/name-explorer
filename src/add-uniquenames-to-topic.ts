@@ -24,6 +24,8 @@ export async function addUniqueNamesToTopic(
       topicId: topic.id
     });
 
+    // const id = UniqueNameHelper.createId(uniqueName);
+
     try {
       const item = await uniqueNameRepository.create(uniqueName);
       list.push(item);
