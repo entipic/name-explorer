@@ -34,7 +34,7 @@ async function getTopicId(ids: string[], slugs: string[]) {
   for (const slug of slugs) {
     const topic = await topicRepository.topicBySlug(slug);
     if (topic) {
-      return topic.id;
+      return topic.id || ((topic as any)._id as string);
     }
   }
   return null;

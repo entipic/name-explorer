@@ -22,8 +22,8 @@ export async function find(unknownName: UnknownName) {
       debug("Cannot create topic for", unknownName);
       return;
     }
-    console.log("Created topic", topic);
-    topicId = topic.id || (topic as any)._id as string;
+    // console.log("Created topic", topic);
+    topicId = topic.id || ((topic as any)._id as string);
   }
 
   await addUniqueNamesToTopic(topicId, uniqueNames);
