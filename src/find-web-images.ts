@@ -79,12 +79,12 @@ export type WebImage = {
 
 async function resolveWikimediaImage(filePageUrl: string) {
   // Extract the file name from the URL
-  const fileName = filePageUrl.split("/").pop();
+  const fileName = encodeURIComponent(filePageUrl.split("/").pop() || "");
   const apiUrl = `https://commons.wikimedia.org/w/api.php?action=query&titles=File:${fileName}&prop=imageinfo&iiprop=url&format=json`;
 
   try {
     const response = await got(apiUrl, { json: true });
-    console.log("response", response.body);
+    // console.log("response", response.body);
     const pages = response.body.query.pages;
     const page = Object.values(pages)[0] as any;
     if (page?.imageinfo) {
