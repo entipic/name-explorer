@@ -84,6 +84,7 @@ async function resolveWikimediaImage(filePageUrl: string) {
 
   try {
     const response = await got(apiUrl, { json: true });
+    console.log("response", response.body);
     const pages = response.body.query.pages;
     const page = Object.values(pages)[0] as any;
     if (page?.imageinfo) {
