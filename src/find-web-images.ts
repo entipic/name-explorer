@@ -17,7 +17,7 @@ export async function findWebImages(
   let country = unknownName.country;
   let lang = unknownName.lang;
 
-  const images = await findImagesOnGoogle(name, lang, country, { limit: 2 });
+  const images = await findImagesOnGoogle(name, lang, country, { limit: 3 });
 
   const list = [];
 
@@ -33,12 +33,16 @@ export async function findWebImages(
             "en-US,en;q=0.8,cs;q=0.6,es;q=0.4,hu;q=0.2,it;q=0.2,lt;q=0.2,ro;q=0.2,ru;q=0.2,sk;q=0.2,uk;q=0.2,pl;q=0.2,bg;q=0.2"
         },
         encoding: null,
-        timeout: 1000 * 3
+        timeout: 1000 * 5
       });
       const result = await processImage(response.body, image);
       list.push(result);
     } catch (e) {
+      console.log(`error on image: ${e.message}`, image.url);
       continue;
+    }
+    if (list.length >= 2) {
+      break;
     }
   }
   return list.filter((image) => !!image);
