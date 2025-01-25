@@ -26,10 +26,10 @@ export async function findImagesOnGoogle(
   options.limit = options.limit || 2;
   //options.type = options.type || 'photo';
   let url =
-    "https://www.google.com/search?q={q}&lr=lang_{lang}&cr={country}&prmd=imvnslo&source=lnms&tbm=isch&tbas=0&tbs=itp:{type},isz:lt,islt:qsvga,ift:jpg,webp&safe=on";
+    "https://www.google.com/search?q={q}&lr=lang_{lang}&cr={country}&prmd=imvnslo&source=lnms&tbm=isch&tbas=0&tbs=itp:{type},isz:gt,isgt:640x480,ift:jpg,webp&safe=on";
   url = url
     .replace("{q}", encodeURIComponent(name))
-    .replace("{type}", options.type || "")
+    .replace("itp:{type},", `itp:${options.type},` || "")
     .replace("{lang}", lang);
 
   if (country) {
