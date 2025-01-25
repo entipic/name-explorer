@@ -6,7 +6,15 @@
 import got from "got";
 import { URL } from "url";
 
-const INVALID_HOSTS = ["feelgrafix.com", "picturesstar.com"];
+const INVALID_HOSTS = [
+  "feelgrafix.com",
+  "picturesstar.com",
+  "shutterstock.com",
+  "gettyimages.com",
+  "alamy.com",
+  "istockphoto.com",
+  "dreamstime.com"
+];
 
 export async function findImagesOnGoogle(
   name: string,
@@ -18,7 +26,7 @@ export async function findImagesOnGoogle(
   options.limit = options.limit || 2;
   //options.type = options.type || 'photo';
   let url =
-    "https://www.google.com/search?q={q}&lr=lang_{lang}&cr={country}&prmd=imvnslo&source=lnms&tbm=isch&tbas=0&tbs=itp:{type},isz:lt,islt:qsvga,ift:jpg&safe=on";
+    "https://www.google.com/search?q={q}&lr=lang_{lang}&cr={country}&prmd=imvnslo&source=lnms&tbm=isch&tbas=0&tbs=itp:{type},isz:lt,islt:qsvga,ift:jpg,webp&safe=on";
   url = url
     .replace("{q}", encodeURIComponent(name))
     .replace("{type}", options.type || "")
@@ -34,7 +42,7 @@ export async function findImagesOnGoogle(
     gzip: true,
     headers: {
       "User-Agent":
-        "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/88.0.4324.192 Safari/537.36",
+        "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/132.0.0.0 Safari/537.36",
       Accept:
         "text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.9",
       "Accept-Language":
@@ -61,6 +69,22 @@ export async function findImagesOnGoogle(
 
     if (list.length >= options.limit) {
       break;
+    }
+  }
+
+  if (list.length === 0) {
+    const reg = /"(https?:\/\/[^"]+\.(png))"/g;
+    const list = [];
+    while ((regResult = reg.exec(response.body))) {
+      const href = regResult[1];
+      if (!href) continue;
+
+      if (INVALID_HOSTS.find((item) => href.includes(item))) continue;
+      list.push(href);
+
+      if (list.length >= options.limit) {
+        break;
+      }
     }
   }
 
