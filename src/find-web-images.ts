@@ -2,7 +2,6 @@ import got from "got";
 
 import { findImagesOnGoogle } from "./google-images";
 import { UnknownName } from "@entipic/domain";
-import { logger } from "logger";
 const dhash = require("dhash-image");
 
 /**
@@ -24,7 +23,7 @@ export async function findWebImages(
 
   for (const image of images) {
     if (image.host === "commons.wikimedia.org") {
-      const url = await resolveWikimediaImage(image.url).catch(logger.error);
+      const url = await resolveWikimediaImage(image.url).catch(console.error);
       if (url) {
         image.url = url;
         if (url) {
