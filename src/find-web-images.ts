@@ -2,6 +2,7 @@ import got from "got";
 
 import { findImagesOnGoogle } from "./google-images";
 import { UnknownName } from "@entipic/domain";
+import { logger } from "logger";
 const dhash = require("dhash-image");
 
 /**
@@ -22,6 +23,15 @@ export async function findWebImages(
   const list = [];
 
   for (const image of images) {
+    if (image.host === "commons.wikimedia.org") {
+      const url = await resolveWikimediaImage(image.url).catch(logger.error);
+      if (url) {
+        image.url = url;
+        if (url) {
+          console.log(`resolved image: ${url}`);
+        }
+      }
+    }
     let response: got.Response<Buffer>;
     try {
       response = await got(image.url, {
@@ -67,3 +77,22 @@ export type WebImage = {
   host: string;
   data: Buffer;
 };
+
+async function resolveWikimediaImage(filePageUrl: string) {
+  // Extract the file name from the URL
+  const fileName = filePageUrl.split("/").pop();
+  const apiUrl = `https://commons.wikimedia.org/w/api.php?action=query&titles=File:${fileName}&prop=imageinfo&iiprop=url&format=json`;
+
+  try {
+    const response = await got(apiUrl, { json: true });
+    const pages = response.body.query.pages;
+    const page = Object.values(pages)[0] as any;
+    if (page?.imageinfo) {
+      return page.imageinfo[0].url as string; // Direct URL to the image
+    }
+    throw new Error("Direct image URL not found");
+  } catch (error) {
+    console.error("Error resolving image URL:", error.message);
+    return null; // Handle as needed
+  }
+}
