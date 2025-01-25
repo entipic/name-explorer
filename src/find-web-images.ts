@@ -17,7 +17,7 @@ export async function findWebImages(
   let country = unknownName.country;
   let lang = unknownName.lang;
 
-  const images = await findImagesOnGoogle(name, lang, country, { limit: 3 });
+  const images = await findImagesOnGoogle(name, lang, country, { limit: 5 });
 
   const list = [];
 
@@ -41,7 +41,7 @@ export async function findWebImages(
       console.log(`error on image: ${e.message}`, image.url);
       continue;
     }
-    if (list.length >= 2) {
+    if (list.length >= 1) {
       break;
     }
   }

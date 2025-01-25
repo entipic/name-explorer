@@ -23,7 +23,7 @@ export async function findImagesOnGoogle(
   options?: { limit: number; type?: string }
 ) {
   options = options || { limit: 2 };
-  options.limit = options.limit || 2;
+  const limit = options.limit || 2;
   //options.type = options.type || 'photo';
   let url =
     "https://www.google.com/search?q={q}&lr=lang_{lang}&cr={country}&prmd=imvnslo&source=lnms&tbm=isch&tbas=0&tbs=itp:{type},isz:gt,isgt:640x480,ift:jpg,webp&safe=on";
@@ -67,7 +67,7 @@ export async function findImagesOnGoogle(
     if (INVALID_HOSTS.find((item) => href.includes(item))) continue;
     list.push(href);
 
-    if (list.length >= options.limit) {
+    if (list.length >= limit) {
       break;
     }
   }
@@ -82,7 +82,7 @@ export async function findImagesOnGoogle(
       if (INVALID_HOSTS.find((item) => href.includes(item))) continue;
       list.push(href);
 
-      if (list.length >= options.limit) {
+      if (list.length >= limit) {
         break;
       }
     }
