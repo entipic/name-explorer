@@ -88,6 +88,11 @@ export async function findImagesOnGoogle(
     }
   }
 
+  if (list.length === 0) {
+    console.log("No images found");
+    console.log("url:", url);
+  }
+
   return [...new Set(list)].map((url) => {
     const u = new URL(url);
     return { host: u.hostname, url };
