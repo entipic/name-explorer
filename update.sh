@@ -1,4 +1,4 @@
 
 git pull
 yarn
-tsc
+yarn tsc
