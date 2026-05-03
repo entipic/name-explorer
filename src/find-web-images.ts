@@ -1,7 +1,7 @@
 import got from "got";
 
-import { findImagesOnGoogle } from "./google-images";
 import { UnknownName } from "@entipic/domain";
+import { findImagesOnSerp } from "./serp-images";
 const dhash = require("dhash-image");
 
 /**
@@ -17,7 +17,7 @@ export async function findWebImages(
   let country = unknownName.country;
   let lang = unknownName.lang;
 
-  const images = await findImagesOnGoogle(name, lang, country, { limit: 5 });
+  const images = await findImagesOnSerp(name, lang, country, { limit: 5 });
 
   const list = [];
 

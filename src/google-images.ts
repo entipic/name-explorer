@@ -5,16 +5,7 @@
 
 import got from "got";
 import { URL } from "url";
-
-const INVALID_HOSTS = [
-  "feelgrafix.com",
-  "picturesstar.com",
-  "shutterstock.com",
-  "gettyimages.com",
-  "alamy.com",
-  "istockphoto.com",
-  "dreamstime.com"
-];
+import { INVALID_HOSTS } from "./constants";
 
 export async function findImagesOnGoogle(
   name: string,
