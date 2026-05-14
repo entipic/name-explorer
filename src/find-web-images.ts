@@ -1,8 +1,34 @@
 import got from "got";
 
 import { UnknownName } from "@entipic/domain";
-import { findImagesOnSerp } from "./serp-images";
+import { findImagesOnSerp, SearchImage } from "./serp-images";
+import { findImagesOnGoogle } from "./google-images";
 const dhash = require("dhash-image");
+
+const findImages = async (name: string, lang: string, country?: string) => {
+  let images: SearchImage[] = [];
+  let error: Error | null = null;
+  try {
+    images = await findImagesOnSerp(name, lang, country, { limit: 5 });
+  } catch (e) {
+    console.error(`Error finding images on SERP: ${e.message}`);
+    error = e;
+  }
+  if (images.length === 0) {
+    try {
+      images = await findImagesOnGoogle(name, lang, country, { limit: 5 });
+    } catch (e) {
+      console.error(`Error finding images on Google: ${e.message}`);
+      if (!error) {
+        error = e;
+      }
+    }
+  }
+  if (error && images.length === 0) {
+    throw error;
+  }
+  return images;
+};
 
 /**
  * Find pictures on the web for a web entity and an unknown name.
@@ -11,13 +37,13 @@ const dhash = require("dhash-image");
  * @return {Array[Object]}			Created pictures.
  */
 export async function findWebImages(
-  unknownName: UnknownName
+  unknownName: UnknownName,
 ): Promise<WebImage[]> {
   let name = unknownName.name;
   let country = unknownName.country;
   let lang = unknownName.lang;
 
-  const images = await findImagesOnSerp(name, lang, country, { limit: 5 });
+  const images = await findImages(name, lang, country);
 
   const list = [];
 
@@ -39,10 +65,10 @@ export async function findWebImages(
             "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_10_3) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/43.0.2357.130 Safari/537.36",
           Accept: "image/jpeg,image/webp,*/*;q=0.8",
           "Accept-Language":
-            "en-US,en;q=0.8,cs;q=0.6,es;q=0.4,hu;q=0.2,it;q=0.2,lt;q=0.2,ro;q=0.2,ru;q=0.2,sk;q=0.2,uk;q=0.2,pl;q=0.2,bg;q=0.2"
+            "en-US,en;q=0.8,cs;q=0.6,es;q=0.4,hu;q=0.2,it;q=0.2,lt;q=0.2,ro;q=0.2,ru;q=0.2,sk;q=0.2,uk;q=0.2,pl;q=0.2,bg;q=0.2",
         },
         encoding: null,
-        timeout: 1000 * 5
+        timeout: 1000 * 5,
       });
       const result = await processImage(response.body, image);
       list.push(result);
@@ -59,14 +85,14 @@ export async function findWebImages(
 
 async function processImage(
   data: Buffer,
-  image: { url: string; host: string }
+  image: { url: string; host: string },
 ): Promise<WebImage> {
   const hash = ((await dhash(data)) as Buffer).toString("hex");
   return {
     hash,
     url: image.url,
     host: image.host,
-    data: data
+    data: data,
   };
 }
 
