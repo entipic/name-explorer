@@ -1,6 +1,7 @@
 import got from "got";
 
 import { UnknownName } from "@entipic/domain";
+import { findImagesOnSerper } from "./serper-images";
 import { findImagesOnSerp, SearchImage } from "./serp-images";
 import { findImagesOnGoogle } from "./google-images";
 const dhash = require("dhash-image");
@@ -9,10 +10,20 @@ const findImages = async (name: string, lang: string, country?: string) => {
   let images: SearchImage[] = [];
   let error: Error | null = null;
   try {
-    images = await findImagesOnSerp(name, lang, country, { limit: 5 });
+    images = await findImagesOnSerper(name, lang, country, { limit: 5 });
   } catch (e) {
-    console.error(`Error finding images on SERP: ${e.message}`);
+    console.error(`Error finding images on Serper: ${e.message}`);
     error = e;
+  }
+  if (images.length === 0) {
+    try {
+      images = await findImagesOnSerp(name, lang, country, { limit: 5 });
+    } catch (e) {
+      console.error(`Error finding images on SERP: ${e.message}`);
+      if (!error) {
+        error = e;
+      }
+    }
   }
   if (images.length === 0) {
     try {
